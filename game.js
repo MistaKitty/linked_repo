@@ -9,7 +9,7 @@ class Game {
         500,
         100,
         150,
-        "./images/pinaColada.png"
+        "./images/pinaColada.png" //Player image
     );
     this.height = 600;
     this.width = 500;
