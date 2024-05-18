@@ -1,0 +1,41 @@
+body {
+    text-align: center;
+}
+
+#game-end {
+    display: none;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;  
+}
+
+.logo-img {
+    width: 250px;
+    height: auto;
+}
+
+body button {
+    font-size: 35px;
+    background-color: orange;
+    color: green;
+    padding: 20px 40px;
+    border-radius: 0px;
+    margin-bottom: 15px;
+}
+
+#game-screen {
+    display: none;
+    align-content: center;
+    padding: 20px 0px;
+    overflow: hidden;
+    position: relative;
+    background-image: url(../images/beach.jpeg);
+    
+    animation: slide 5s linear infinite;
+    background-size: 600px 650px;
+    background-repeat: no-repeat;
+
+  }
+  

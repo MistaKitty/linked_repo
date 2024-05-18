@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Piña Colada</title>
+  </head>
+  <body>
+    <main>
+      <!-- start screen -->
+      <div id="game-intro">
+        <img src="./images/logo.png" alt="" class="logo-img" />
+        <br />
+        <button id="start-button">Let's go!</button>
+        <p>Use the arrows left and right to collect the help the pina colada recipe!</p>
+        
+      </div>
+
+      <div id="game-container">
+        <div>
+          <h2>Stats</h2>
+          <p><b>Score: </b><span id="score">0</span></p>
+          <p><b>Lives:</b> <span id="lives">3,5</span></p>
+        </div>
+        <!-- hidden content -->
+        <div id="game-screen"></div>
+      </div>
+
+      <!-- End game -->
+      <div id="game-end">
+        <img src="./images/logo.png" alt="" class="logo-img" />
+        <h1>You lose!</h1>
+        <br />
+        <button id="restart-button">Restart</button>
+      </div>
+    </main>
+
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
