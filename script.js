@@ -25,10 +25,10 @@ function handleKeydown(event) {
       // Update player's based on the key pressed
       switch (key) {
         case "ArrowLeft":
-          game.player.directionX = -3;
+          game.player.directionX = -3; // Player speed left
           break;
         case "ArrowRight":
-          game.player.directionX = 3;
+          game.player.directionX = 3; //Player speed right
           break;
       }
     }
