@@ -29,13 +29,10 @@ body button {
     display: none;
     align-content: center;
     padding: 20px 0px;
-    overflow: hidden;
     position: relative;
     background-image: url(../images/beach.jpeg);
-    
-    animation: slide 5s linear infinite;
-    background-size: 600px 650px;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
-
-  }
+    
+    }
   
