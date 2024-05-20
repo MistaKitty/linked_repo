@@ -14,7 +14,7 @@ class Game {
     this.height = 600;
     this.width = 500;
     this.badFruits = [];
-    this.fruits = [];
+    this.limes = [];
     this.score = 0;
     this.lives = 3,5; 
     this.gameIsOver = false;
@@ -52,14 +52,19 @@ start() {
 
     update() {
         this.player.move();
+
+        if (Math.random() > 0.98 && this.limes.length < 1) {
+            this.limes.push(new Lime(this.gameScreen));
+          }
+        }
     }
-}
+
 
 class Player {
     constructor(gameScreen, left, top, width, height, imgSrc) {
         this.gameScreen = gameScreen;
         this.left = left;
-        this.top = top; // Do not remove
+        this.top = top; // Do not remove this
         this.width = width;
         this.height = height;
         this.directionX = 0;
@@ -70,7 +75,7 @@ class Player {
         this.element.style.width = `${width}px`;
         this.element.style.height = `${height}px`;
         this.element.style.left = `${left}px`;
-        this.element.style.top = `${top}px`; // Do not remove this to
+        this.element.style.top = `${top}px`; // Also do not remove this one
         this.gameScreen.appendChild(this.element);
     }
 
@@ -92,13 +97,43 @@ class Player {
         this.element.style.left = `${this.left}px`;
     }
 
-    didCollide(obstacle) {
+    didCollide(lime) {
         const playerRect = this.element.getBoundingClientRect();
-        const obstacleRect = obstacle.element.getBoundingClientRect();
+        const limeRect = lime.element.getBoundingClientRect();
 
         return (
-            playerRect.left < obstacleRect.right &&
-            playerRect.right > obstacleRect.left
+            playerRect.left < limeRect.right &&
+            playerRect.right > limeRect.left
         );
     }
 }
+class Lime {
+    constructor(gameScreen) {
+      this.gameScreen = gameScreen;
+      this.left = Math.floor(Math.random() * 300 + 70);
+      this.top = 0;
+      this.width = 100;
+      this.height = 150;
+      this.element = document.createElement("img");
+      this.element.src = "./images/lime.jpeg";
+      this.element.style.position = "absolute";
+      this.element.style.width = `${this.width}px`;
+      this.element.style.height = `${this.height}px`;
+      this.element.style.left = `${this.left}px`;
+      this.element.style.top = `${this.top}px`;
+      this.gameScreen.appendChild(this.element);
+    }
+  
+    updatePosition() {
+      
+      this.element.style.left = `${this.left}px`;
+      this.element.style.top = `${this.top}px`;
+    }
+  
+    move() {
+     
+      this.top += 3;
+      
+      this.updatePosition();
+    }
+  }
