@@ -115,7 +115,7 @@ class Lime {
       this.width = 100;
       this.height = 150;
       this.element = document.createElement("img");
-      this.element.src = "./images/lime.jpeg";
+      this.element.src = "./images/lime.png";
       this.element.style.position = "absolute";
       this.element.style.width = `${this.width}px`;
       this.element.style.height = `${this.height}px`;
