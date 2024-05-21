@@ -19,9 +19,9 @@ function handleKeydown(event) { // Function to handle keydown events
     const key = event.key; // Get the pressed key
 
     if (key === "ArrowLeft") { // If the left arrow key is pressed
-        game.player.directionX = -4; // Move the player left
+        game.player.directionX = -7; // Move the player left
     } else if (key === "ArrowRight") { // If the right arrow key is pressed
-        game.player.directionX = 4; // Move the player right
+        game.player.directionX = 7; // Move the player right
     }
 }
 

@@ -15,6 +15,7 @@ class Game {
         this.height = 600; // Height of the game screen
         this.width = 500; // Width of the game screen
         this.limes = []; // Array to store lime objects
+        this.coconuts = []; // Array to store coconut objects
         this.score = 0; // Player's score
         this.lives = 3; // Number of lives the player has
         this.gameIsOver = false; // Flag to indicate if the game is over
@@ -85,6 +86,31 @@ class Game {
                 i--; // Decrement the loop counter
             }
         }
+        
+        
+        // Loop for coconuts
+        for (let i = 0; i < this.coconuts.length; i++) {
+            const coconut = this.coconuts[i]; // Get the current coconut object
+            coconut.move(); // Call the coconut's move method
+
+            // Check for player-coconut collisions
+            if (this.player.didCollide(coconut)) { // If there's a collision between player and coconut
+                coconut.element.remove(); // Remove the coconut element from the DOM
+                this.coconuts.splice(i, 1); // Remove the coconut object from the array
+                this.score += 2; // Increment the score by 2
+                i--; // Decrement the loop counter
+
+                // Check if player ran out of lives
+                if (this.lives <= 0) {
+                    this.endGame(); // Call the endGame method if the player ran out of lives
+                }
+            } else if (coconut.top > this.height) { // If the coconut goes past the screen height
+                this.lives--; // Decrement the player's lives
+                coconut.element.remove(); // Remove the coconut element from the DOM
+                this.coconuts.splice(i, 1); // Remove the coconut object from the array
+                i--; // Decrement the loop counter
+            }
+        }
 
         // Check for game over
         if (this.lives === 0) {
@@ -92,9 +118,14 @@ class Game {
         }
 
         // Add new limes randomly
-        if (Math.random() > 0.98 && this.limes.length < 1) {
+        if (Math.random() > 0.98 && this.limes.length < 3) {
             this.limes.push(new Lime(this.gameScreen)); // Create a new Lime object and add it to the array
         }
+        
+        if (Math.random() > 0.98 && this.coconuts.length < 2) {
+            this.coconuts.push(new Coconut(this.gameScreen)); // Cria um novo objeto Coconut e o adiciona ao array
+        }
+
     }
 
     endGame() {
@@ -191,7 +222,37 @@ class Lime {
 
     move() {
         // Lime movement
-        this.top += 5; // Move the lime downwards
+        this.top += 4; // Move the lime downwards
         this.updatePosition(); // Update the lime's position on the screen
+    }
+}
+class Coconut {
+    constructor(gameScreen) {
+        // Initialize coconut
+        this.gameScreen = gameScreen; // Reference to the game screen element
+        this.left = Math.floor(Math.random() * 300 + 70); // Randomize initial left position within the screen width
+        this.top = 0; // Initial top position
+        this.width = 40; // Width of the coconut
+        this.height = 40; // Height of the coconut
+        this.element = document.createElement("img"); // Create a new img element for the coconut
+        this.element.src = "./images/coconut.png"; // Set the image source for the coconut
+        this.element.style.position = "absolute"; // Set the position style
+        this.element.style.width = `${this.width}px`; // Set the width style
+        this.element.style.height = `${this.height}px`; // Set the height style
+        this.element.style.left = `${this.left}px`; // Set the left style
+        this.element.style.top = `${this.top}px`; // Set the top style
+        this.gameScreen.appendChild(this.element); // Append the coconut element to the game screen
+    }
+
+    updatePosition() {
+        // Update coconut position on screen
+        this.element.style.left = `${this.left}px`; // Set the left style of the coconut element
+        this.element.style.top = `${this.top}px`; // Set the top style of the coconut element
+    }
+
+    move() {
+        // Coconut movement
+        this.top += 3; // Move the coconut downwards
+        this.updatePosition(); // Update the coconut's position on the screen
     }
 }
