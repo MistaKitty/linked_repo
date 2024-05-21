@@ -41,9 +41,18 @@ class Game {
         }
     }
 
+    updateScore(){
+        document.getElementById('score').textContent = this.score;
+    }
+
+    updateLives(){
+        document.getElementById('lives').textContent = this.lives;
+    }
+
     update() {
         this.player.move();
-    
+        this.updateScore();
+        this.updateLives();
         for (let i = 0; i < this.limes.length; i++) {
             const lime = this.limes[i];
             lime.move();
