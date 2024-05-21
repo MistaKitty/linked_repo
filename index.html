@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./style.css" />
-    <title>Piña Colada</title>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8" /> <!-- Define the character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Set the viewport to make the website responsive -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" /> <!-- Ensure compatibility with Internet Explorer -->
+    <link rel="stylesheet" href="./style.css" /> <!-- Link to the external stylesheet -->
+    <title>Piña Colada</title> <!-- Set the title of the web page -->
+</head>
+<body>
     <main>
-      <!-- start screen -->
-      <div id="game-intro">
-        <img src="./images/logo.png" alt="" class="logo-img" />
-        <br />
-        <button id="start-button">Let's go!</button>
-        <p>Use the arrows left and right to collect the help the pina colada recipe!</p>
-        
-      </div>
-
-      <div id="game-container">
-        <div>
-          <h2>Stats</h2>
-          <p><b>Score: </b><span id="score">0</span></p>
-          <p><b>Lives:</b> <span id="lives">3</span></p>
+        <!-- Start screen -->
+        <div id="game-intro">
+            <img src="./images/logo.png" alt="Game Logo" class="logo-img" /> <!-- Display the logo image -->
+            <br />
+            <button id="start-button">Let's go!</button> <!-- Button to start the game -->
+            <p>Use the arrows left and right to collect the help the piña colada recipe!</p> <!-- Instructions for the player -->
         </div>
-        <!-- hidden content -->
-        <div id="game-screen"></div>
-      </div>
 
-      <!-- End game -->
-      <div id="game-end">
-        <img src="./images/logo.png" alt="" class="logo-img" />
-        <h1>You lose!</h1>
-        <br />
-        <button id="restart-button">Restart</button>
-      </div>
+        <div id="game-container">
+            <div>
+                <h2>Stats</h2> <!-- Header for the stats section -->
+                <p><b>Score: </b><span id="score">0</span></p> <!-- Display the player's score -->
+                <p><b>Lives:</b> <span id="lives">3</span></p> <!-- Display the player's lives -->
+            </div>
+            <!-- Game screen, initially hidden -->
+            <div id="game-screen"></div>
+        </div>
+
+        <!-- End game screen -->
+        <div id="game-end">
+            <img src="./images/logo.png" alt="Game Logo" class="logo-img" /> <!-- Display the logo image -->
+            <h1>You lose!</h1> <!-- Display the "You lose!" message -->
+            <br />
+            <button id="restart-button">Restart</button> <!-- Button to restart the game -->
+        </div>
     </main>
 
-    <script type="text/javascript" src="game.js"></script>
-    <script type="text/javascript" src="script.js"></script>
-  </body>
+    <script type="text/javascript" src="game.js"></script> <!-- Include the game logic script -->
+    <script type="text/javascript" src="script.js"></script> <!-- Include the interaction script -->
+</body>
 </html>

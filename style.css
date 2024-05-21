@@ -1,38 +1,36 @@
 body {
-    text-align: center;
+    text-align: center; /* Center-align text */
 }
 
 #game-end {
-    display: none;
+    display: none; /* Hide the end game screen by default */
 }
 
 #game-container {
-    display: flex;
-    justify-content: center;  
+    display: flex; /* Use flexbox layout for game container */
+    justify-content: center; /* Center content horizontally within game container */
 }
 
 .logo-img {
-    width: 250px;
-    height: auto;
+    width: 250px; /* Set width of logo image */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
 }
 
 body button {
-    font-size: 35px;
-    background-color: orange;
-    color: green;
-    padding: 20px 40px;
-    border-radius: 0px;
-    margin-bottom: 15px;
+    font-size: 35px; /* Set font size for all buttons */
+    background-color: orange; /* Set background color for buttons */
+    color: green; /* Set text color for buttons */
+    padding: 20px 40px; /* Set padding for buttons */
+    border-radius: 0px; /* Set border radius for buttons */
+    margin-bottom: 15px; /* Set bottom margin for buttons */
 }
 
 #game-screen {
-    display: none;
-    align-content: center;
-    padding: 20px 0px;
-    position: relative;
-    background-image: url(../images/beach.jpeg);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    
+    display: none; /* Hide the game screen by default */
+    align-content: center; /* Align content vertically within game screen */
+    padding: 20px 0px; /* Set padding for game screen */
+    position: relative; /* Set position to relative for absolute positioning of elements */
+    background-image: url(../images/beach.jpeg); /* Set background image for game screen */
+    background-size: 100% 100%; /* Cover entire background with image */
+    background-repeat: no-repeat; /* Do not repeat background image */
 }
-  
