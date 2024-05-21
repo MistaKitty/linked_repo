@@ -1,41 +1,41 @@
 window.onload = function () {
-    const startButton = document.getElementById("start-button");
-    const restartButton = document.getElementById("restart-button");
-    let game
-    startButton.addEventListener("click", function() {
-        startGame();
-    });
+  const startButton = document.getElementById("start-button");
+  const restartButton = document.getElementById("restart-button");
+  let game;
 
-function startGame() {
-    console.log("Teste")
+  startButton.addEventListener("click", function() {
+      startGame();
+  });
 
-    game = new Game();
+  restartButton.addEventListener("click", function () {
+      restartGame();
+  });
 
-    game.start();
-}
-
-function handleKeydown(event) {
-    const key = event.key;
-    const possibleKeystrokes = ["ArrowLeft", "ArrowRight",];
-
-    // Check if the pressed key is in the possibleKeystrokes array
-    if (possibleKeystrokes.includes(key)) {
-      event.preventDefault();
-
-      // Update player's based on the key pressed
-      switch (key) {
-        case "ArrowLeft":
-          game.player.directionX = -4; // Player speed left
-          break;
-        case "ArrowRight":
-          game.player.directionX = 4; //Player speed right
-          break;
-      }
-    }
+  function startGame() {
+      game = new Game();
+      game.start();
   }
 
-  // Add the handleKeydown function as an event listener for the keydown event
+  function handleKeydown(event) {
+      const key = event.key;
+      const possibleKeystrokes = ["ArrowLeft", "ArrowRight"];
+
+      if (possibleKeystrokes.includes(key)) {
+          event.preventDefault();
+          switch (key) {
+              case "ArrowLeft":
+                  game.player.directionX = -4;
+                  break;
+              case "ArrowRight":
+                  game.player.directionX = 4;
+                  break;
+          }
+      }
+  }
+
   window.addEventListener("keydown", handleKeydown);
 
+  function restartGame() {
+      location.reload();
+  }
 };
-
