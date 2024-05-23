@@ -56,6 +56,7 @@ class Game {
         this.updateObjects(this.stars, 1, Star, 0, true); // Update the stars
 
         if (this.lives === 0) {
+            lifeLostSound.play(); // Play the life lost sound effect
             this.endGame(); // If there are no lives left, end the game
         }
     }
@@ -94,6 +95,7 @@ class Game {
         this.gameIsOver = true; // Set the game over status to true
         this.gameScreen.style.display = "none"; // Hide the game screen
         this.gameEndScreen.style.display = "block"; // Show the game end screen
+        stopBackgroundMusic();
     }
 }
 
