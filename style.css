@@ -8,7 +8,7 @@ body {
 
 #game-container {
     display: flex; /* Use flexbox layout for game container */
-    justify-content: center; /* Center content horizontally within game container */
+    justify-content: center; /* Center content horizontally within game container */    
 }
 
 .logo-img {

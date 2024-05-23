@@ -1,322 +1,260 @@
 class Game {
     constructor() {
         // Initialize game elements and variables
-        this.startScreen = document.getElementById("game-intro"); // Get reference to the start screen element
-        this.gameScreen = document.getElementById("game-screen"); // Get reference to the game screen element
-        this.gameEndScreen = document.getElementById("game-end"); // Get reference to the game end screen element
-        this.player = new Player( // Create a new Player object
-            this.gameScreen, // Pass the game screen element as a parameter
-            200, // Initial left position of the player
-            490, // Initial top position of the player
-            90, // Width of the player
-            150, // Height of the player
-            "./images/pinaColada.png" // Image source for the player
-        );
-        this.height = 600; // Height of the game screen
-        this.width = 500; // Width of the game screen
-        this.limes = []; // Array to store lime objects
-        this.coconuts = []; // Array to store coconut objects
-        this.pineapples = []; // Array to store pineapple objects
-        this.score = 0; // Player's score
-        this.lives = 3; // Number of lives the player has
-        this.gameIsOver = false; // Flag to indicate if the game is over
-        this.gameIntervalId = null; // Identifier for the game interval
-        this.gameLoopFrequency = 1000 / 60; // Frequency of the game loop
+        this.startScreen = document.getElementById("game-intro"); // Get the game intro screen element from the HTML document
+        this.gameScreen = document.getElementById("game-screen"); // Get the game screen element from the HTML document
+        this.gameEndScreen = document.getElementById("game-end"); // Get the game end screen element from the HTML document
+        this.player = new Player(this.gameScreen, 200, 490, 90, 150, "./images/pinaColada.png"); // Create a new player object
+        this.height = 600; // Set the game screen height
+        this.width = 500; // Set the game screen width
+        this.limes = []; // Initialize an empty array to store lime objects
+        this.coconuts = []; // Initialize an empty array to store coconut objects
+        this.pineapples = []; // Initialize an empty array to store pineapple objects
+        this.stars = []; // Initialize an empty array to store star objects
+        this.score = 0; // Initialize the score to 0
+        this.lives = 3; // Initialize the lives to 3
+        this.gameIsOver = false; // Set the game over status to false
+        this.gameIntervalId = null; // Initialize the game interval ID to null
+        this.gameLoopFrequency = 1000 / 60; // Set the game loop frequency (in milliseconds)
     }
 
     start() {
-        // Initial game setup
-        this.gameScreen.style.height = `${this.height}px`; // Set the height of the game screen
-        this.gameScreen.style.width = `${this.width}px`; // Set the width of the game screen
-
-        this.startScreen.style.display = "none"; // Hide the start screen
-        this.gameScreen.style.display = "block"; // Display the game screen
+        this.gameScreen.style.height = `${this.height}px`; // Set the game screen height in pixels
+        this.gameScreen.style.width = `${this.width}px`; // Set the game screen width in pixels
+        this.startScreen.style.display = "none"; // Hide the game intro screen
+        this.gameScreen.style.display = "block"; // Show the game screen
 
         // Start the game loop
         this.gameIntervalId = setInterval(() => {
-            this.gameLoop(); // Call the gameLoop method
-        }, this.gameLoopFrequency);
+            this.gameLoop();
+        }, this.gameLoopFrequency); // Set an interval to run the game loop at the specified frequency
     }
 
     gameLoop() {
-        // Update game state
-        this.update(); // Call the update method
-
-        // Check for game over
+        this.update(); // Update the game state
         if (this.gameIsOver) {
-            clearInterval(this.gameIntervalId); // Stop the game loop
+            clearInterval(this.gameIntervalId); // If the game is over, clear the game loop interval
         }
     }
 
-    updateScore(){
-        // Update the score displayed on the screen
-        document.getElementById('score').textContent = this.score;
+    updateScore() {
+        document.getElementById('score').textContent = this.score; // Update the score display in the HTML document
     }
 
-    updateLives(){
-        // Update the number of lives displayed on the screen
-        document.getElementById('lives').textContent = this.lives;
+    updateLives() {
+        document.getElementById('lives').textContent = this.lives; // Update the lives display in the HTML document
     }
 
     update() {
-        // Update player and fruits state
-        this.player.move(); // Call the move method of the player
-        this.updateScore(); // Call the updateScore method to update the score display
-        this.updateLives(); // Call the updateLives method to update the lives display
+        this.player.move(); // Move the player
+        this.updateScore(); // Update the score
+        this.updateLives(); // Update the lives
 
-        // Loop through limes in play
-        for (let i = 0; i < this.limes.length; i++) {
-            const lime = this.limes[i]; // Get the current lime object
-            lime.move(); // Call the move method of the lime
+        this.updateObjects(this.limes, 10, Lime, 1); // Update the limes
+        this.updateObjects(this.coconuts, 7, Coconut, 2); // Update the coconuts
+        this.updateObjects(this.pineapples, 5, Pineapple, 5); // Update the pineapples
+        this.updateObjects(this.stars, 1, Star, 0, true); // Update the stars
 
-            // Check for player-lime collisions
-            if (this.player.didCollide(lime)) { // If there's a collision between player and lime
-                lime.element.remove(); // Remove the lime element from the DOM
-                this.limes.splice(i, 1); // Remove the lime object from the array
-                this.score++; // Increment the score
-                i--; // Decrement the loop counter
-
-                // Check if player ran out of lives
-                if (this.lives <= 0) {
-                    this.endGame(); // Call the endGame method if the player ran out of lives
-                }
-            } else if (lime.top > this.height) { // If the lime goes past the screen height
-                this.lives--; // Decrement the player's lives
-                lime.element.remove(); // Remove the lime element from the DOM
-                this.limes.splice(i, 1); // Remove the lime object from the array
-                i--; // Decrement the loop counter
-            }
-        }
-          
-        // Loop for coconuts
-        for (let i = 0; i < this.coconuts.length; i++) {
-            const coconut = this.coconuts[i]; // Get the current coconut object
-            coconut.move(); // Call the coconut's move method
-
-            // Check for player-coconut collisions
-            if (this.player.didCollide(coconut)) { // If there's a collision between player and coconut
-                coconut.element.remove(); // Remove the coconut element from the DOM
-                this.coconuts.splice(i, 1); // Remove the coconut object from the array
-                this.score += 2; // Increment the score by 2
-                i--; // Decrement the loop counter
-
-                // Check if player ran out of lives
-                if (this.lives <= 0) {
-                    this.endGame(); // Call the endGame method if the player ran out of lives
-                }
-            } else if (coconut.top > this.height) { // If the coconut goes past the screen height
-                this.lives--; // Decrement the player's lives
-                coconut.element.remove(); // Remove the coconut element from the DOM
-                this.coconuts.splice(i, 1); // Remove the coconut object from the array
-                i--; // Decrement the loop counter
-            }
-        }
-
-        
-        // Loop for pineapple
-        for (let i = 0; i < this.pineapples.length; i++) {
-            const pineapple = this.pineapples[i]; // Get the current pineapple object
-            pineapple.move(); // Call the pineapple's move method
-
-            // Check for player-pineapple collisions
-            if (this.player.didCollide(pineapple)) { // If there's a collision between player and pineapple
-                pineapple.element.remove(); // Remove the pineapple element from the DOM
-                this.pineapples.splice(i, 1); // Remove the pineapple object from the array
-                this.score += 5; // Increment the score by 2
-                i--; // Decrement the loop counter
-
-                // Check if player ran out of lives
-                if (this.lives <= 0) {
-                    this.endGame(); // Call the endGame method if the player ran out of lives
-                }
-            } else if (pineapple.top > this.height) { // If the pineapple goes past the screen height
-                this.lives--; // Decrement the player's lives
-                pineapple.element.remove(); // Remove the pineapple element from the DOM
-                this.pineapples.splice(i, 1); // Remove the pineapple object from the array
-                i--; // Decrement the loop counter
-            }
-        }
-
-
-        // Check for game over
         if (this.lives === 0) {
-            this.endGame(); // Call the endGame method if the player ran out of lives
+            this.endGame(); // If there are no lives left, end the game
+        }
+    }
+
+    updateObjects(objectsArray, maxObjects, ObjectType, scoreIncrement, star = false) {
+        for (let i = 0; i < objectsArray.length; i++) {
+            const object = objectsArray[i];
+            object.move(); // Move the object
+
+            if (this.player.didCollide(object)) {
+                object.element.remove(); // If the player collided with the object, remove the object
+                objectsArray.splice(i, 1); // Remove the object from the array
+                this.score += scoreIncrement; // Increase the score
+                if (star) this.lives++; // If the object is a star, increase the lives
+                i--; // Decrement the index to account for the removed object
+            } else if (object.top > this.height) {
+                 if (!star) {this.lives--;} // If the object has moved off the screen, decrement the lives
+                object.element.remove(); // Remove the object
+                objectsArray.splice(i, 1); // Remove the object from the array
+                i--; // Decrement the index to account for the removed object
+            }
         }
 
-        // Add new limes randomly
-        if (Math.random() > 0.98 && this.limes.length < 3) {
-            this.limes.push(new Lime(this.gameScreen)); // Create a new Lime object and add it to the array
+        if (Math.random() > 0.99 && objectsArray.length < maxObjects) {
+            objectsArray.push(new ObjectType(this.gameScreen)); // If a random number is greater than 0.98 and the number of objects is less than the maximum, add a new object
         }
-        // Add new coconuts randomly
-        if (Math.random() > 0.98 && this.coconuts.length < 2) {
-            this.coconuts.push(new Coconut(this.gameScreen)); // Create a new Coconut object and add it to the array
-        }
-
-        // Add new pineapples randomly
-        if (Math.random() > 0.98 && this.coconuts.length < 1) {
-            this.coconuts.push(new Pineapple(this.gameScreen)); // Create a new pineapple object and add it to the array
-        }
-
     }
 
     endGame() {
-        // Clear game elements and display game end screen
-        this.player.element.remove(); // Remove the player element from the DOM
-        this.limes.forEach(lime => lime.element.remove()); // Remove all lime elements from the DOM
-        this.limes.forEach(coconut => coconut.element.remove()); // Remove all coconut elements from the DOM
-        this.limes.forEach(pineapple => pineapple.element.remove()); // Remove all pineapple elements from the DOM
+        this.player.element.remove(); // Remove the player
+        this.limes.forEach(lime => lime.element.remove()); // Remove all limes
+        this.coconuts.forEach(coconut => coconut.element.remove()); // Remove all coconuts
+        this.pineapples.forEach(pineapple => pineapple.element.remove()); // Remove all pineapples
+        this.stars.forEach(star => star.element.remove()); // Remove all stars
 
-        this.gameIsOver = true; // Set the game over flag to true
-
+        this.gameIsOver = true; // Set the game over status to true
         this.gameScreen.style.display = "none"; // Hide the game screen
-        this.gameEndScreen.style.display = "block"; // Display the game end screen
+        this.gameEndScreen.style.display = "block"; // Show the game end screen
     }
 }
 
+
 class Player {
     constructor(gameScreen, left, top, width, height, imgSrc) {
-        // Initialize player
-        this.gameScreen = gameScreen; // Reference to the game screen element
-        this.left = left; // Initial left position
-        this.top = top; // Initial top position
-        this.width = width; // Width of the player
-        this.height = height; // Height of the player
-        this.directionX = 0; // Horizontal movement direction
-        this.element = document.createElement("img"); // Create a new img element for the player
+        this.gameScreen = gameScreen; // The game screen element
+        this.left = left; // The left position of the player
+        this.top = top; // The top position of the player
+        this.width = width; // The width of the player
+        this.height = height; // The height of the player
+        this.directionX = 0; // The horizontal direction of the player
+        this.element = document.createElement("img"); // Create an image element for the player
 
-        // Configure player image
-        this.element.src = imgSrc; // Set the image source
-        this.element.style.position = "absolute"; // Set the position style
-        this.element.style.width = `${width}px`; // Set the width style
-        this.element.style.height = `${height}px`; // Set the height style
-        this.element.style.left = `${left}px`; // Set the left style
-        this.element.style.top = `${top}px`; // Set the top style
-        this.gameScreen.appendChild(this.element); // Append the player element to the game screen
+        this.element.src = imgSrc; // Set the source of the image
+        this.element.style.position = "absolute"; // Position the player absolutely within the game screen
+        this.element.style.width = `${width}px`; // Set the width of the player
+        this.element.style.height = `${height}px`; // Set the height of the player
+        this.element.style.left = `${left}px`; // Set the left position of the player
+        this.element.style.top = `${top}px`; // Set the top position of the player
+        this.gameScreen.appendChild(this.element); // Add the player to the game screen
     }
 
     move() {
-        // Player movement
-        this.left += this.directionX; // Update the left position based on the directionX
-
-        // Screen boundaries
+        this.left += this.directionX; // Move the player horizontally
         if (this.left < 0) {
-            this.left = 0; // Prevent player from going off the left edge of the screen
+            this.left = 0; // Prevent the player from moving off the left edge of the screen
         }
-
         if (this.left > this.gameScreen.offsetWidth - this.width) {
-            this.left = this.gameScreen.offsetWidth - this.width; // Prevent player from going off the right edge of the screen
+            this.left = this.gameScreen.offsetWidth - this.width; // Prevent the player from moving off the right edge of the screen
         }
-
-        this.updatePosition(); // Update the player's position on the screen
+        this.updatePosition(); // Update the position of the player
     }
 
     updatePosition() {
-        // Update player position on screen
-        this.element.style.left = `${this.left}px`; // Set the left style of the player element
+        this.element.style.left = `${this.left}px`; // Update the left position of the player
     }
 
-    didCollide(lime) {
-        // Check for collision between player and lime
-        const playerRect = this.element.getBoundingClientRect(); // Get the bounding rectangle of the player element
-        const limeRect = lime.element.getBoundingClientRect(); // Get the bounding rectangle of the lime element
+    didCollide(object) {
+        const playerRect = this.element.getBoundingClientRect(); // Get the bounding rectangle of the player
+        const objectRect = object.element.getBoundingClientRect(); // Get the bounding rectangle of the object
 
         return (
-            playerRect.left < limeRect.right && // Check if player's left edge is to the left of the lime's right edge
-            playerRect.right > limeRect.left && // Check if player's right edge is to the right of the lime's left edge
-            playerRect.top < limeRect.bottom && // Check if player's top edge is above the lime's bottom edge
-            playerRect.bottom > limeRect.top // Check if player's bottom edge is below the lime's top edge
+            playerRect.left < objectRect.right && // Check if the player is to the left of the right edge of the object
+            playerRect.right > objectRect.left && // Check if the right edge of the player is to the right of the left edge of the object
+            playerRect.top < objectRect.bottom && // Check if the top of the player is above the bottom of the object
+            playerRect.bottom > objectRect.top // Check if the bottom of the player is below the top of the object
         );
     }
 }
 
 class Lime {
     constructor(gameScreen) {
-        // Initialize lime
-        this.gameScreen = gameScreen; // Reference to the game screen element
-        this.left = Math.floor(Math.random() * 300 + 70); // Randomize initial left position within the screen width
-        this.top = 0; // Initial top position
-        this.width = 50; // Width of the lime
-        this.height = 50; // Height of the lime
-        this.element = document.createElement("img"); // Create a new img element for the lime
-        this.element.src = "./images/lime.png"; // Set the image source for the lime
-        this.element.style.position = "absolute"; // Set the position style
-        this.element.style.width = `${this.width}px`; // Set the width style
-        this.element.style.height = `${this.height}px`; // Set the height style
-        this.element.style.left = `${this.left}px`; // Set the left style
-        this.element.style.top = `${this.top}px`; // Set the top style
-        this.gameScreen.appendChild(this.element); // Append the lime element to the game screen
+        this.gameScreen = gameScreen; // The game screen element
+        this.left = Math.floor(Math.random() * 300 + 70); // The left position of the lime, randomly generated
+        this.top = 0; // The top position of the lime
+        this.width = 50; // The width of the lime
+        this.height = 50; // The height of the lime
+        this.element = document.createElement("img"); // Create an image element for the lime
+        this.element.src = "./images/lime.png"; // Set the source of the image
+        this.element.style.position = "absolute"; // Position the lime absolutely within the game screen
+        this.element.style.width = `${this.width}px`; // Set the width of the lime
+        this.element.style.height = `${this.height}px`; // Set the height of the lime
+        this.element.style.left = `${this.left}px`; // Set the left position of the lime
+        this.element.style.top = `${this.top}px`; // Set the top position of the lime
+        this.gameScreen.appendChild(this.element); // Add the lime to the game screen
     }
 
     updatePosition() {
-        // Update lime position on screen
-        this.element.style.left = `${this.left}px`; // Set the left style of the lime element
-        this.element.style.top = `${this.top}px`; // Set the top style of the lime element
+        this.element.style.left = `${this.left}px`; // Update the left position of the lime
+        this.element.style.top = `${this.top}px`; // Update the top position of the lime
     }
 
     move() {
-        // Lime movement
-        this.top += 3; // Move the lime downwards
-        this.updatePosition(); // Update the lime's position on the screen
+        this.top += 3; // Move the lime down the screen
+        this.updatePosition(); // Update the position of the lime
     }
 }
+
+// The Coconut, Pineapple, and Star classes are similar to the Lime class, but with different images, sizes, and speeds.
+
 class Coconut {
     constructor(gameScreen) {
-        // Initialize coconut
-        this.gameScreen = gameScreen; // Reference to the game screen element
-        this.left = Math.floor(Math.random() * 300 + 70); // Randomize initial left position within the screen width
-        this.top = 0; // Initial top position
-        this.width = 40; // Width of the coconut
-        this.height = 40; // Height of the coconut
-        this.element = document.createElement("img"); // Create a new img element for the coconut
-        this.element.src = "./images/coconut.png"; // Set the image source for the coconut
-        this.element.style.position = "absolute"; // Set the position style
-        this.element.style.width = `${this.width}px`; // Set the width style
-        this.element.style.height = `${this.height}px`; // Set the height style
-        this.element.style.left = `${this.left}px`; // Set the left style
-        this.element.style.top = `${this.top}px`; // Set the top style
-        this.gameScreen.appendChild(this.element); // Append the coconut element to the game screen
+        this.gameScreen = gameScreen;
+        this.left = Math.floor(Math.random() * 300 + 70);
+        this.top = 0;
+        this.width = 40;
+        this.height = 40;
+        this.element = document.createElement("img");
+        this.element.src = "./images/coconut.png";
+        this.element.style.position = "absolute";
+        this.element.style.width = `${this.width}px`;
+        this.element.style.height = `${this.height}px`;
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
+        this.gameScreen.appendChild(this.element);
     }
 
     updatePosition() {
-        // Update coconut position on screen
-        this.element.style.left = `${this.left}px`; // Set the left style of the coconut element
-        this.element.style.top = `${this.top}px`; // Set the top style of the coconut element
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
     }
 
     move() {
-        // Coconut movement
-        this.top += 4; // Move the coconut downwards
-        this.updatePosition(); // Update the coconut's position on the screen
+        this.top += 4;
+        this.updatePosition();
     }
 }
 
 class Pineapple {
     constructor(gameScreen) {
-        // Initialize pineapple
-        this.gameScreen = gameScreen; // Reference to the game screen element
-        this.left = Math.floor(Math.random() * 300 + 70); // Randomize initial left position within the screen width
-        this.top = 0; // Initial top position
-        this.width = 30; // Width of the pineapple
-        this.height = 50; // Height of the pineapple
-        this.element = document.createElement("img"); // Create a new img element for the pineapple
-        this.element.src = "./images/pineapple.png"; // Set the image source for the pineapple
-        this.element.style.position = "absolute"; // Set the position style
-        this.element.style.width = `${this.width}px`; // Set the width style
-        this.element.style.height = `${this.height}px`; // Set the height style
-        this.element.style.left = `${this.left}px`; // Set the left style
-        this.element.style.top = `${this.top}px`; // Set the top style
-        this.gameScreen.appendChild(this.element); // Append the pineapple element to the game screen
+        this.gameScreen = gameScreen;
+        this.left = Math.floor(Math.random() * 300 + 70);
+        this.top = 0;
+        this.width = 30;
+        this.height = 50;
+        this.element = document.createElement("img");
+        this.element.src = "./images/pineapple.png";
+        this.element.style.position = "absolute";
+        this.element.style.width = `${this.width}px`;
+        this.element.style.height = `${this.height}px`;
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
+        this.gameScreen.appendChild(this.element);
     }
 
     updatePosition() {
-        // Update pineapple position on screen
-        this.element.style.left = `${this.left}px`; // Set the left style of the pineapple element
-        this.element.style.top = `${this.top}px`; // Set the top style of the pineapple element
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
     }
 
     move() {
-        // pineapple movement
-        this.top += 5; // Move the pineapple downwards
-        this.updatePosition(); // Update the pineapple's position on the screen
+        this.top += 5;
+        this.updatePosition();
+    }
+}
+
+class Star {
+    constructor(gameScreen) {
+        this.gameScreen = gameScreen;
+        this.left = Math.floor(Math.random() * 300 + 70);
+        this.top = 0;
+        this.width = 15;
+        this.height = 15;
+        this.element = document.createElement("img");
+        this.element.src = "./images/star.png";
+        this.element.style.position = "absolute";
+        this.element.style.width = `${this.width}px`;
+        this.element.style.height = `${this.height}px`;
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
+        this.gameScreen.appendChild(this.element);
+    }
+
+    updatePosition() {
+        this.element.style.left = `${this.left}px`;
+        this.element.style.top = `${this.top}px`;
+    }
+
+    move() {
+        this.top += 8;
+        this.updatePosition();
     }
 }
