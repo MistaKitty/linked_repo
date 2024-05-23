@@ -30,7 +30,7 @@ body button {
     align-content: center; /* Align content vertically within game screen */
     padding: 20px 0px; /* Set padding for game screen */
     position: relative; /* Set position to relative for absolute positioning of elements */
-    background-image: url(../images/beach.jpeg); /* Set background image for game screen */
+    background-image: url('/linked_repo/images/beach.jpeg'); /* Set background image for game screen */
     background-size: 100% 100%; /* Cover entire background with image */
     background-repeat: no-repeat; /* Do not repeat background image */
 }
