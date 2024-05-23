@@ -16,6 +16,7 @@ class Game {
         this.gameIsOver = false; // Set the game over status to false
         this.gameIntervalId = null; // Initialize the game interval ID to null
         this.gameLoopFrequency = 1000 / 60; // Set the game loop frequency (in milliseconds)
+        this.starSound = new Audio("./assets/star.mp3");
     }
 
     start() {
@@ -65,21 +66,27 @@ class Game {
         for (let i = 0; i < objectsArray.length; i++) {
             const object = objectsArray[i];
             object.move(); // Move the object
-
+        
             if (this.player.didCollide(object)) {
                 object.element.remove(); // If the player collided with the object, remove the object
                 objectsArray.splice(i, 1); // Remove the object from the array
                 this.score += scoreIncrement; // Increase the score
-                if (star) this.lives++; // If the object is a star, increase the lives
-                i--; // Decrement the index to account for the removed object
+                if (star) {
+                    this.lives++; // If the object is a star, increase the lives
+                    this.starSound.play(); // Play blimp sound when picking a star
+                    i--; // Decrement the index to account for the removed object
+                }
             } else if (object.top > this.height) {
-                 if (!star) {this.lives--;} // If the object has moved off the screen, decrement the lives
+                if (!star) {
+                    this.lives--; // If the object has moved off the screen, decrement the lives
+                }
                 object.element.remove(); // Remove the object
                 objectsArray.splice(i, 1); // Remove the object from the array
                 i--; // Decrement the index to account for the removed object
             }
         }
-
+        
+        
         if (Math.random() > 0.99 && objectsArray.length < maxObjects) {
             objectsArray.push(new ObjectType(this.gameScreen)); // If a random number is greater than 0.98 and the number of objects is less than the maximum, add a new object
         }

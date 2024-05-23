@@ -2,7 +2,8 @@ const startButton = document.getElementById("start-button"); // Get reference to
 const restartButton = document.getElementById("restart-button"); // Get reference to the restart button
 let game; // Variable to store the game object
 let backgroundMusic; // Variable to store the background music object
-let lifeLostSound = new Audio("./assets/loseSound.mp3"); // Path to file
+let lifeLostSound = new Audio("./assets/loseSound.mp3"); // Path to losing audio file 
+
 
 startButton.addEventListener("click", function() { // Add click event to the start button
     startGame(); // Call the startGame function when the start button is clicked
